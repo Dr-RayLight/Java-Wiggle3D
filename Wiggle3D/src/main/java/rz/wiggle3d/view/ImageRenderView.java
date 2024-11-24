@@ -2,18 +2,29 @@ package rz.wiggle3d.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.Optional;
+import java.util.function.Function;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import rz.util.PathUtil;
 import rz.wiggle3d.components.ImagePanel;
+import rz.wiggle3d.manager.EventManager;
+import rz.wiggle3d.manager.EventManager.EventType;
+import rz.wiggle3d.manager.EventTask;
 
 public class ImageRenderView extends JPanel {
 
     private static final String TAB_TITLE_ORIGIN_IMAGE = "Orignal Image";
     private static final String TAB_TITLE_DEPTH_MAP = "Depth Map";
     private static final String TAB_TITLE_WIGGLE_STEREOSCOPY = "Wiggle Stereoscopy";
+
+    private static final int TAB_INEDX_ORIGIN_IMAGE = 0;
+    private static final int TAB_INEDX_DEPTH_MAP = 1;
+    private static final int TAB_INEDX_WIGGLE_STEREOSCOPY = 2;
 
     // ---------------------------------------------------------
     public ImageRenderView() {
@@ -61,6 +72,25 @@ public class ImageRenderView extends JPanel {
         tabPanel.addTab(TAB_TITLE_DEPTH_MAP, tabDepthMap);
         tabPanel.addTab(TAB_TITLE_WIGGLE_STEREOSCOPY, tabWiggleStereo);
 
+        tabPanel.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                Function<Integer, EventTask<Optional<?>>> EventTaskCreator = $ -> {
+                    switch ($) {
+                        case TAB_INEDX_ORIGIN_IMAGE:
+                            return EventTask.create(EventType.TAB_ORIGINAL_IMAGE);
+                        case TAB_INEDX_DEPTH_MAP:
+                            return EventTask.create(EventType.TAB_DEPTH_MAP);
+                        case TAB_INEDX_WIGGLE_STEREOSCOPY:
+                            return EventTask.create(EventType.TAB_WIGGLE_STEREOSCOPY);
+                        default:
+                            return EventTask.empty();
+                    }
+                };
+                EventManager.dispatchEvent(EventTaskCreator.apply(tabPanel.getSelectedIndex()));
+            }
+        });
+
         add(tabPanel);
     }
+
 }

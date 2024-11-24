@@ -1,10 +1,18 @@
 package rz.wiggle3d.view;
 
+import java.util.Optional;
+
 import javax.swing.*;
 
-public class MainView extends JFrame {
+import rz.wiggle3d.controller.EventTaskListener;
+import rz.wiggle3d.manager.EventManager;
+import rz.wiggle3d.manager.EventTask;
+
+
+public class MainView extends JFrame implements EventTaskListener{
 
     // Global Variables
+    private static final String TAG = "[MainView]";
     private static final double HEADER_DIVDER_RATIO = 0.15;
 
     private static final int BORDER_SPLITER_SIZE = 5;
@@ -35,8 +43,13 @@ public class MainView extends JFrame {
         mainPane.setResizeWeight(HEADER_DIVDER_RATIO);
         mainPane.setDividerSize(BORDER_SPLITER_SIZE);
         add(mainPane);
+
+        // Register Listener
+        EventManager.addListener(this);
     }
 
-    
-
+    @Override
+    public void onEventReceived(EventTask<Optional<?>> eventTask) {
+        System.out.println(TAG + " eventTask: " + eventTask.getEventType());
+    }
 }
