@@ -1,7 +1,6 @@
 package rz.wiggle3d.view;
 
-import javax.swing.*; // For JFrame, JLabel, and ImageIcon
-import java.awt.*; // For BorderLayout and other layout managers
+import javax.swing.*;
 
 public class MainView extends JFrame {
 
@@ -38,6 +37,6 @@ public class MainView extends JFrame {
         add(mainPane);
     }
 
-    // --------------------------------------------------------------------------
+    
 
 }

@@ -3,17 +3,19 @@ package rz.wiggle3d.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
+
+import rz.util.PathUtil;
+import rz.wiggle3d.components.ImagePanel;
 
 public class ImageRenderView extends JPanel {
 
     private static final String TAB_TITLE_ORIGIN_IMAGE = "Orignal Image";
     private static final String TAB_TITLE_DEPTH_MAP = "Depth Map";
     private static final String TAB_TITLE_WIGGLE_STEREOSCOPY = "Wiggle Stereoscopy";
+
+    private static final String DEMO_IMAGE = "C:\\Users\\User\\Desktop\\Raymond-2023\\_RD_\\Code-Night\\Java-Wiggle3D\\Wiggle3D\\src\\images\\demo.jpg";
 
     // ---------------------------------------------------------
     public ImageRenderView() {
@@ -31,17 +33,23 @@ public class ImageRenderView extends JPanel {
     }
 
     private void initTabs() {
+        // Original Images
         JPanel tabOriImg = new JPanel();
+        tabOriImg.setLayout(new BorderLayout());
         tabOriImg.setBackground(Color.WHITE);
-        tabOriImg.add(new JLabel("Orignal Image"));
 
+        // Draw Image.
+        ImagePanel imagePanel = new ImagePanel(PathUtil.IMAGE_DEMO.get());
+        tabOriImg.add(imagePanel);
+        // ---------------------------------------------------------
+        // Depth Map
         JPanel tabDepthMap = new JPanel();
         tabDepthMap.setBackground(Color.WHITE);
-        tabDepthMap.add(new JLabel("Depth Map"));
 
+        // ---------------------------------------------------------
+        // Wiggle Stereoscopy
         JPanel tabWiggleStereo = new JPanel();
         tabWiggleStereo.setBackground(Color.WHITE);
-        tabWiggleStereo.add(new JLabel("Wiggle Stereoscopy"));
 
         JTabbedPane tabPanel = new JTabbedPane();
         tabPanel.addTab(TAB_TITLE_ORIGIN_IMAGE, tabOriImg);
@@ -50,5 +58,4 @@ public class ImageRenderView extends JPanel {
 
         add(tabPanel);
     }
-
 }
