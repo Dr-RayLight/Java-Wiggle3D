@@ -4,10 +4,15 @@ package rz.wiggle3d;
  * Hello world!
  *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+        
+        // Start to render main frame.
+        MainFrame mf = new MainFrame();
+        mf.setVisible(true);
+
+
+        
     }
 }
