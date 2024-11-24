@@ -1,54 +1,50 @@
 package rz.wiggle3d.components;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 // Class to encapsulate PNG rendering into an ImageButton
 public class ImageButton extends JButton {
 
-    // Constructor that initializes the button with a PNG image from a URL
-    public ImageButton(String pngUri, int width, int height) {
-        try {
-            // Load the PNG image from the URL
-            ImageIcon imageIcon = new ImageIcon(new URL(pngUri));
+    // ------------------------------------------------------------
+    // Constructor to create an ImageButton from the given image resource path
+    public ImageButton(String imagePath, int width, int height) {
+        // Load the image from resources
+        BufferedImage image = loadImage(imagePath);
 
-            // Resize the icon to fit the desired dimensions
-            Image img = imageIcon.getImage();
-            Image scaledImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
-            // Set the button's icon
-            this.setIcon(new ImageIcon(scaledImg));
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            // Display error if the PNG cannot be loaded
-            this.setText("Image Load Failed");
+        if (image != null) {
+            Image scaledImage = image.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+            this.setIcon(new ImageIcon(scaledImage));
+        } else {
+            // Handle the case where the image wasn't found
+            System.out.println("Image not found: " + imagePath);
         }
 
-        this.setPreferredSize(new Dimension(width, height)); // Adjust size as needed
-        this.setContentAreaFilled(false); // Make button's background transparent
-        this.setBorderPainted(false); // Remove border
+        // Set a default size for the button
+        this.setSize(width, height);
+        this.setPreferredSize(new Dimension(width, height));
     }
 
-    // Public method to update the PNG image using a new URI
-    public void updateImage(String path, int width, int height) {
-        try {
-            // Load the new PNG image from the URL
-            ImageIcon imageIcon = new ImageIcon(path);
+    // ------------------------------------------------------------
+    // Load the image from resources folder
+    private BufferedImage loadImage(String imagePath) {
+        // Load the image using getClassLoader
+        InputStream imageStream = getClass().getClassLoader().getResourceAsStream(imagePath);
 
-            // Resize the icon to fit the desired dimensions
-            Image img = imageIcon.getImage();
-            Image scaledImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
-            // Update the button's icon
-            this.setIcon(new ImageIcon(scaledImg));
-            this.setText(null); // Clear any error text if successful
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.setIcon(null);
-            this.setText("Image Load Failed");
+        if (imageStream != null) {
+            try {
+                return ImageIO.read(imageStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Image not found in path: " + imagePath);
         }
+
+        return null;
     }
 }

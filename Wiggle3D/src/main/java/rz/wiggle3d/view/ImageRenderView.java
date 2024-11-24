@@ -15,8 +15,6 @@ public class ImageRenderView extends JPanel {
     private static final String TAB_TITLE_DEPTH_MAP = "Depth Map";
     private static final String TAB_TITLE_WIGGLE_STEREOSCOPY = "Wiggle Stereoscopy";
 
-    private static final String DEMO_IMAGE = "C:\\Users\\User\\Desktop\\Raymond-2023\\_RD_\\Code-Night\\Java-Wiggle3D\\Wiggle3D\\src\\images\\demo.jpg";
-
     // ---------------------------------------------------------
     public ImageRenderView() {
         this.setLayout(new BorderLayout());
