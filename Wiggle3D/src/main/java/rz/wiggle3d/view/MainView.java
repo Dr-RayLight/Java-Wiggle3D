@@ -5,7 +5,7 @@ import javax.swing.*;
 public class MainView extends JFrame {
 
     // Global Variables
-    private static final double HEADER_DIVDER_RATIO = 0.1;
+    private static final double HEADER_DIVDER_RATIO = 0.15;
 
     private static final int BORDER_SPLITER_SIZE = 5;
     private static final int WIDTH = 1200;

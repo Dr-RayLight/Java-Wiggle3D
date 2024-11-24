@@ -10,8 +10,8 @@ import rz.wiggle3d.components.ImageButton;
 
 public class HeaderView extends JPanel {
 
-    private static final int IMAGE_BUTTON_WIDTH = 50;
-    private static final int IMAGE_BUTTON_HEIGHT = 50;
+    private static final int IMAGE_BUTTON_WIDTH = 80;
+    private static final int IMAGE_BUTTON_HEIGHT = 80;
 
     public HeaderView() {
         this.setLayout(new BorderLayout());
