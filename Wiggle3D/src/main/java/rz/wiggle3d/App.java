@@ -11,8 +11,5 @@ public class App {
         // Start to render main frame.
         MainFrame mf = new MainFrame();
         mf.setVisible(true);
-
-
-        
     }
 }
