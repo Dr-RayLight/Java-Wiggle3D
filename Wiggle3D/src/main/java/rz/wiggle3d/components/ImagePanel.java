@@ -3,6 +3,7 @@ package rz.wiggle3d.components;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -24,7 +25,7 @@ public class ImagePanel extends JPanel {
     private void loadImage(String imagePath) {
         try {
             System.out.println(TAG + "image path: " + imagePath);
-            InputStream is = getClass().getClassLoader().getResourceAsStream(imagePath);
+            InputStream is = getClass().getClassLoader().getResourceAsStream(imagePath); // Here is under src folder.
             image = ImageIO.read(is);
         } catch (IOException e) {
             e.printStackTrace();
@@ -32,7 +33,11 @@ public class ImagePanel extends JPanel {
     }
 
     public void updateImage(String path) {
-        loadImage(path);
+        try {
+            image = ImageIO.read(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         repaint();
     }
 

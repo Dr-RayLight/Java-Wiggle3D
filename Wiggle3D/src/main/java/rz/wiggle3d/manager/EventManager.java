@@ -36,7 +36,7 @@ public class EventManager {
         mListeners.clear();
     }
 
-    public static void dispatchEvent(EventTask<Optional<?>> eventTask) {
+    public static void dispatchEvent(EventTask<?> eventTask) {
         mListeners.forEach($ -> $.onEventReceived(eventTask));
     }
 }

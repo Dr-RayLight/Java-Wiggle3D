@@ -8,8 +8,7 @@ import rz.wiggle3d.controller.EventTaskListener;
 import rz.wiggle3d.manager.EventManager;
 import rz.wiggle3d.manager.EventTask;
 
-
-public class MainView extends JFrame implements EventTaskListener{
+public class MainView extends JFrame implements EventTaskListener {
 
     // Global Variables
     private static final String TAG = "[MainView]";
@@ -49,7 +48,7 @@ public class MainView extends JFrame implements EventTaskListener{
     }
 
     @Override
-    public void onEventReceived(EventTask<Optional<?>> eventTask) {
+    public void onEventReceived(EventTask<?> eventTask) {
         System.out.println(TAG + " eventTask: " + eventTask.getEventType());
     }
 }

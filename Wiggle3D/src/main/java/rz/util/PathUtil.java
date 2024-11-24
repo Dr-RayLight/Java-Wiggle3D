@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 
 public enum PathUtil {
     IMAGE_DEMO("demo.jpg"),
+    IMAGE_NONE("no_image.png"),
+
     ICON_FOLDER("folder.png"),
     ICON_DELETE("delete.png"),
     ICON_REFRESH("refresh.png"),

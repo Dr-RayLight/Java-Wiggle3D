@@ -10,6 +10,7 @@ import java.util.function.Function;
 import javax.swing.Box;
 import javax.swing.JPanel;
 
+import rz.util.ImagePicker;
 import rz.util.PathUtil;
 import rz.wiggle3d.components.ImageButton;
 import rz.wiggle3d.manager.EventManager;
@@ -62,10 +63,10 @@ public class HeaderView extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Function<String, EventTask<Optional<?>>> EventTaskCreator = $ -> {
+        Function<String, EventTask<?>> EventTaskCreator = $ -> {
             switch ($) {
                 case BUTTON_NAME_BROWSE:
-                    return EventTask.create(Optional.of(""), EventType.BUTTON_BROWSE);
+                    return EventTask.create(ImagePicker.pick(), EventType.BUTTON_BROWSE);
                 case BUTTON_NAME_DELETE:
                     return EventTask.create(EventType.BUTTON_DELETE);
                 case BUTTON_NAME_REFRESH:
@@ -74,7 +75,7 @@ public class HeaderView extends JPanel implements ActionListener {
                     return EventTask.empty();
             }
         };
-        
+
         String cmd = e.getActionCommand();
         EventManager.dispatchEvent(EventTaskCreator.apply(cmd));
     }

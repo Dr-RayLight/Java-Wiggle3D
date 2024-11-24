@@ -2,6 +2,7 @@ package rz.wiggle3d.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionListener;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -12,12 +13,14 @@ import javax.swing.event.ChangeListener;
 
 import rz.util.PathUtil;
 import rz.wiggle3d.components.ImagePanel;
+import rz.wiggle3d.controller.EventTaskListener;
 import rz.wiggle3d.manager.EventManager;
 import rz.wiggle3d.manager.EventManager.EventType;
 import rz.wiggle3d.manager.EventTask;
 
-public class ImageRenderView extends JPanel {
+public class ImageRenderView extends JPanel implements EventTaskListener {
 
+    private static final String TAG = "[ImageRenderView]";
     private static final String TAB_TITLE_ORIGIN_IMAGE = "Orignal Image";
     private static final String TAB_TITLE_DEPTH_MAP = "Depth Map";
     private static final String TAB_TITLE_WIGGLE_STEREOSCOPY = "Wiggle Stereoscopy";
@@ -25,6 +28,8 @@ public class ImageRenderView extends JPanel {
     private static final int TAB_INEDX_ORIGIN_IMAGE = 0;
     private static final int TAB_INEDX_DEPTH_MAP = 1;
     private static final int TAB_INEDX_WIGGLE_STEREOSCOPY = 2;
+
+    private ImagePanel mOriImagePanel = new ImagePanel(PathUtil.IMAGE_NONE.get());
 
     // ---------------------------------------------------------
     public ImageRenderView() {
@@ -39,6 +44,7 @@ public class ImageRenderView extends JPanel {
 
     public void onUpdate() {
         initTabs();
+        EventManager.addListener(this);
     }
 
     private void initTabs() {
@@ -48,8 +54,7 @@ public class ImageRenderView extends JPanel {
         tabOriImg.setBackground(Color.WHITE);
 
         // Draw Image.
-        ImagePanel imagePanel = new ImagePanel(PathUtil.IMAGE_DEMO.get());
-        tabOriImg.add(imagePanel);
+        tabOriImg.add(mOriImagePanel);
         // ---------------------------------------------------------
         // Depth Map
         JPanel tabDepthMap = new JPanel();
@@ -91,6 +96,20 @@ public class ImageRenderView extends JPanel {
         });
 
         add(tabPanel);
+    }
+
+    @Override
+    public void onEventReceived(EventTask<?> eventTask) {
+        System.out.println(TAG + "Pick Image, eventTask: " + eventTask.getEventType().name());
+   
+        if (eventTask.getEventType() != EventType.BUTTON_BROWSE) {
+            return;
+        }
+
+        eventTask.getValue().ifPresent(imgPath -> {
+            System.out.println(TAG + "Pick Image Path: " + imgPath);
+            mOriImagePanel.updateImage(imgPath.toString());
+        });
     }
 
 }
