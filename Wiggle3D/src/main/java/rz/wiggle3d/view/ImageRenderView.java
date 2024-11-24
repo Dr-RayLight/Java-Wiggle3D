@@ -49,7 +49,14 @@ public class ImageRenderView extends JPanel {
         JPanel tabWiggleStereo = new JPanel();
         tabWiggleStereo.setBackground(Color.WHITE);
 
-        JTabbedPane tabPanel = new JTabbedPane();
+        JTabbedPane tabPanel = new JTabbedPane() {
+            public Color getForegroundAt(int index) {
+                if (getSelectedIndex() == index)
+                    return Color.BLUE;
+                return Color.BLACK;
+            }
+        };
+
         tabPanel.addTab(TAB_TITLE_ORIGIN_IMAGE, tabOriImg);
         tabPanel.addTab(TAB_TITLE_DEPTH_MAP, tabDepthMap);
         tabPanel.addTab(TAB_TITLE_WIGGLE_STEREOSCOPY, tabWiggleStereo);
