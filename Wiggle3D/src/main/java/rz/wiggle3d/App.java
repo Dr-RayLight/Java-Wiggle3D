@@ -1,15 +1,10 @@
 package rz.wiggle3d;
 
-/**
- * Hello world!
- *
- */
+import rz.wiggle3d.view.MainView;
+
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        
-        // Start to render main frame.
-        MainFrame mf = new MainFrame();
+        MainView mf = new MainView();
         mf.setVisible(true);
     }
 }
