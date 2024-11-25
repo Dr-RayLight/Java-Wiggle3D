@@ -2,7 +2,6 @@ package rz.wiggle3d.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionListener;
 import java.util.Optional;
 import java.util.function.Function;
 

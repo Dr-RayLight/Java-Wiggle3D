@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Optional;
 import java.util.function.Function;
 
 import javax.swing.Box;
@@ -19,7 +18,7 @@ import rz.wiggle3d.manager.EventManager.EventType;
 
 public class HeaderView extends JPanel implements ActionListener {
 
-    private static final String TAG = "[HeaderView]";
+    // private static final String TAG = "[HeaderView]";
     private static final int IMAGE_BUTTON_WIDTH = 80;
     private static final int IMAGE_BUTTON_HEIGHT = 80;
 

@@ -9,7 +9,7 @@
   <name>Wiggle3D</name>
   <url>http://maven.apache.org</url>
   <dependencies>
-    
+
     <!-- Junit -->
     <dependency>
       <groupId>junit</groupId>
@@ -23,6 +23,13 @@
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-swing</artifactId>
       <version>20</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.bytedeco/javacv-platform -->
+    <dependency>
+      <groupId>org.bytedeco</groupId>
+      <artifactId>javacv-platform</artifactId>
+      <version>1.5.7</version>
     </dependency>
 
   </dependencies>

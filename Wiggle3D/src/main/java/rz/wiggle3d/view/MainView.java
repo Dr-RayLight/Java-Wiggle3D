@@ -1,9 +1,6 @@
 package rz.wiggle3d.view;
 
-import java.util.Optional;
-
 import javax.swing.*;
-
 import rz.wiggle3d.controller.EventTaskListener;
 import rz.wiggle3d.manager.EventManager;
 import rz.wiggle3d.manager.EventTask;

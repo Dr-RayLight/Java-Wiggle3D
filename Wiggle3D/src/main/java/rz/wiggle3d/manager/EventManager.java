@@ -1,7 +1,6 @@
 package rz.wiggle3d.manager;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import rz.wiggle3d.controller.EventTaskListener;
 
