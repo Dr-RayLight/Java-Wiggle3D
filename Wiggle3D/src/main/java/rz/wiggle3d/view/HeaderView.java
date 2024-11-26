@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.function.Function;
 
 import javax.swing.Box;
@@ -11,6 +12,7 @@ import javax.swing.JPanel;
 
 import rz.util.ImagePicker;
 import rz.util.PathUtil;
+import rz.util.PyCmd;
 import rz.wiggle3d.components.ImageButton;
 import rz.wiggle3d.manager.EventManager;
 import rz.wiggle3d.manager.EventTask;
@@ -65,7 +67,10 @@ public class HeaderView extends JPanel implements ActionListener {
         Function<String, EventTask<?>> EventTaskCreator = $ -> {
             switch ($) {
                 case BUTTON_NAME_BROWSE:
-                    return EventTask.create(ImagePicker.pick(), EventType.BUTTON_BROWSE);
+                    String imagePath = ImagePicker.pick();
+                    String genDepthMapPyPath = getClass().getClassLoader().getResource("script/generate_depth_map.py").getPath();
+                    PyCmd.execute(genDepthMapPyPath, imagePath);
+                    return EventTask.create(imagePath, EventType.BUTTON_BROWSE);
                 case BUTTON_NAME_DELETE:
                     return EventTask.create(EventType.BUTTON_DELETE);
                 case BUTTON_NAME_REFRESH:
