@@ -9,7 +9,7 @@ public class MainView extends JFrame implements EventTaskListener {
 
     // Global Variables
     private static final String TAG = "[MainView]";
-    private static final double HEADER_DIVDER_RATIO = 0.15;
+    private static final int HEADER_DIVDER_HEIGHT = 100;
 
     private static final int BORDER_SPLITER_SIZE = 5;
     private static final int WIDTH = 1200;
@@ -35,8 +35,8 @@ public class MainView extends JFrame implements EventTaskListener {
 
         // Layout Def.
         JSplitPane mainPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, HeaderView.build(), BodyView.build());
-        mainPane.setDividerLocation(HEADER_DIVDER_RATIO);
-        mainPane.setResizeWeight(HEADER_DIVDER_RATIO);
+        mainPane.setDividerLocation(HEADER_DIVDER_HEIGHT);
+        mainPane.setResizeWeight(0.1);
         mainPane.setDividerSize(BORDER_SPLITER_SIZE);
         add(mainPane);
 

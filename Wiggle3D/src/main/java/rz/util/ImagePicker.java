@@ -9,6 +9,7 @@ public class ImagePicker {
     // Method to pick an image
     public static String pick() {
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home"), "Desktop"));
 
         // Set the file filter to allow only .jpeg, .jpg, .png files
         fileChooser.setFileFilter(new FileFilter() {

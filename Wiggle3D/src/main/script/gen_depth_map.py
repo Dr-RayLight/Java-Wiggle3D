@@ -16,7 +16,7 @@ transform = (
 )
 
 # 讀取並預處理圖片
-image_path = "C:\\Users\\User\\Desktop\\Raymond-2023\\_RD_\\Code-Night\\Java-Wiggle3D\\Wiggle3D\\src\\main\\resources\\images\\demo.jpg"
+image_path = ""
 image = cv2.imread(image_path)
 image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 input_batch = transform(image_rgb).to(device)

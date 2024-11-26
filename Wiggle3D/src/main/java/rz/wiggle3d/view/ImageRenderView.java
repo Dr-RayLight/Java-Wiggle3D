@@ -7,6 +7,7 @@ import java.util.function.Function;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -100,7 +101,7 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
     @Override
     public void onEventReceived(EventTask<?> eventTask) {
         System.out.println(TAG + "Pick Image, eventTask: " + eventTask.getEventType().name());
-   
+
         if (eventTask.getEventType() != EventType.BUTTON_BROWSE) {
             return;
         }
