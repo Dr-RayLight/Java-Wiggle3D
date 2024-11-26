@@ -18,9 +18,7 @@ transform = (
 )
 
 # 讀取並預處理圖片
-image_path = "C:\\Users\\User\\Desktop\\image\\digital_camera_photo-1080x675.jpg"
-# image_path = sys.argv[1]
-# image_path = r"{}".format(sys.argv[1])
+image_path = sys.argv[1]
 print("Python Image Path:", image_path)
 
 image = cv2.imread(image_path)
@@ -49,6 +47,8 @@ depth_map = cv2.normalize(
 
 folder = os.path.dirname(image_path)
 output = os.path.join(folder, "output_depth_map.png")
-print("folder: ", folder, "\noutput_depth_map:", output)
-print("Gen_Depth_Map_Success:", os.path.exists(output))
+
+print("folder: ",folder, "\noutput_depth_map:",output)
+print("Gen_Depth_Map_Success:",os.path.exists(output))
+
 cv2.imwrite(output, depth_map)
