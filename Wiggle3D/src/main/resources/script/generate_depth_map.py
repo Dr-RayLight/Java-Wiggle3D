@@ -47,8 +47,7 @@ depth_map = cv2.normalize(
 
 folder = os.path.dirname(image_path)
 output = os.path.join(folder, "output_depth_map.png")
+cv2.imwrite(output, depth_map)
 
 print("folder: ",folder, "\noutput_depth_map:",output)
 print("Gen_Depth_Map_Success:",os.path.exists(output))
-
-cv2.imwrite(output, depth_map)

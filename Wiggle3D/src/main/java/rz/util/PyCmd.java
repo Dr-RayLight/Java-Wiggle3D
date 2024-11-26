@@ -35,7 +35,7 @@ public class PyCmd {
             Process process = processBuilder.start();
             // 讀取腳本執行過程中的輸出
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
+            String line = "";
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
@@ -46,9 +46,6 @@ public class PyCmd {
                 System.err.println("[PyCmd]: " + line);
             }
 
-            // 等待腳本執行完成
-            int exitCode = process.waitFor();
-            System.out.println("[PyCmd]: Finish Script Abort the Process: " + exitCode);
             return line;
 
         } catch (Exception e) {

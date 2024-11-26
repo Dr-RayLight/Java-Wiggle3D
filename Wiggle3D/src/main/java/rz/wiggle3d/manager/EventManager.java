@@ -17,6 +17,9 @@ public class EventManager {
         TAB_DEPTH_MAP,
         TAB_WIGGLE_STEREOSCOPY,
 
+        ORIGINAL_IMAGE_UPLOAD,
+        DEPTH_MAP_UPLOAD,
+
         NONE;
         ;
     }

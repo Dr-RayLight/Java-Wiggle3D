@@ -67,10 +67,22 @@ public class HeaderView extends JPanel implements ActionListener {
         Function<String, EventTask<?>> EventTaskCreator = $ -> {
             switch ($) {
                 case BUTTON_NAME_BROWSE:
-                    String imagePath = ImagePicker.pick();
-                    String genDepthMapPyPath = getClass().getClassLoader().getResource("script/generate_depth_map.py").getPath();
-                    PyCmd.execute(genDepthMapPyPath, imagePath);
-                    return EventTask.create(imagePath, EventType.BUTTON_BROWSE);
+                    String oriImagePath = ImagePicker.pick();
+                    String pyScript = getClass().getClassLoader().getResource("script/generate_depth_map.py").getPath();
+                    
+                    new Thread(() -> {
+                        System.out.println("[HeaderView]: Start Gen");
+                        File fileDepthMap = new File(new File(oriImagePath).getParent() + "/output_depth_map.png");
+                        PyCmd.execute(pyScript, oriImagePath);
+
+                        boolean isGenSucc = fileDepthMap.exists();
+                        System.out.println("[HeaderView]: isGenSucc: " + isGenSucc);
+                        
+                        if (isGenSucc) {
+                            EventManager.dispatchEvent(EventTask.create(fileDepthMap.toPath(), EventType.DEPTH_MAP_UPLOAD));
+                        }
+                    }).start();
+                    return EventTask.create(oriImagePath, EventType.ORIGINAL_IMAGE_UPLOAD);
                 case BUTTON_NAME_DELETE:
                     return EventTask.create(EventType.BUTTON_DELETE);
                 case BUTTON_NAME_REFRESH:

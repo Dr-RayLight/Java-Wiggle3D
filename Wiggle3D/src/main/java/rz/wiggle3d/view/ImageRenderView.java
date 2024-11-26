@@ -30,6 +30,7 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
     private static final int TAB_INEDX_WIGGLE_STEREOSCOPY = 2;
 
     private ImagePanel mOriImagePanel = new ImagePanel(PathUtil.IMAGE_NONE.get());
+    private ImagePanel mDepthMapPanel = new ImagePanel(PathUtil.IMAGE_NONE.get());
 
     // ---------------------------------------------------------
     public ImageRenderView() {
@@ -58,8 +59,9 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
         // ---------------------------------------------------------
         // Depth Map
         JPanel tabDepthMap = new JPanel();
+        tabDepthMap.setLayout(new BorderLayout());
         tabDepthMap.setBackground(Color.WHITE);
-
+        tabDepthMap.add(mDepthMapPanel);
         // ---------------------------------------------------------
         // Wiggle Stereoscopy
         JPanel tabWiggleStereo = new JPanel();
@@ -100,16 +102,23 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
 
     @Override
     public void onEventReceived(EventTask<?> eventTask) {
-        System.out.println(TAG + "Pick Image, eventTask: " + eventTask.getEventType().name());
 
-        if (eventTask.getEventType() != EventType.BUTTON_BROWSE) {
-            return;
+        EventManager.EventType eventType = eventTask.getEventType();
+        System.out.println(TAG + " eventTask: " + eventTask.getEventType());
+        switch (eventType) {
+            case ORIGINAL_IMAGE_UPLOAD: {
+                String imagePath = eventTask.getValue().get().toString();
+                mOriImagePanel.updateImage(imagePath.toString());
+            }
+                break;
+            case DEPTH_MAP_UPLOAD: {
+                String imagePath = eventTask.getValue().get().toString();
+                mDepthMapPanel.updateImage(imagePath);
+            }
+                break;
+            default:
+                break;
         }
-
-        eventTask.getValue().ifPresent(imgPath -> {
-            System.out.println(TAG + "Pick Image Path: " + imgPath);
-            mOriImagePanel.updateImage(imgPath.toString());
-        });
     }
 
 }
