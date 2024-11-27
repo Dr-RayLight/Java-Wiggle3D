@@ -108,7 +108,19 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
         EventManager.EventType eventType = eventTask.getEventType();
         System.out.println(TAG + " eventTask: " + eventTask.getEventType());
         switch (eventType) {
+            case BUTTON_DELETE: {
+                mOriImagePanel.clearImage();
+                mOriImagePanel.updateImage(PathUtil.IMAGE_NONE.get());
+
+                mDepthMapPanel.clearImage();
+                mDepthMapPanel.updateImage(PathUtil.IMAGE_NONE.get());
+
+                mTabPanels.setSelectedIndex(TAB_INEDX_ORIGIN_IMAGE);
+            }
+                break;
             case ORIGINAL_IMAGE_UPLOAD: {
+                mTabPanels.setSelectedIndex(TAB_INEDX_ORIGIN_IMAGE);
+                
                 String imagePath = eventTask.getValue().get().toString();
                 mOriImagePanel.updateImage(imagePath.toString());
             }

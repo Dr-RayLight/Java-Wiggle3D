@@ -28,7 +28,7 @@ public class LoadingDialog {
         SwingUtilities.invokeLater(() -> {
             // 創建 JOptionPane
             JOptionPane pane = new JOptionPane(
-                    "製作中，請稍候....", // 顯示訊息
+                    "請稍候，Wiggle Stereoscopy 製作中....", // 顯示訊息
                     JOptionPane.INFORMATION_MESSAGE,
                     JOptionPane.DEFAULT_OPTION,
                     null,
@@ -36,7 +36,7 @@ public class LoadingDialog {
                     null);
 
             // 創建 JDialog
-            dialog = pane.createDialog(null, "...");
+            dialog = pane.createDialog(null, "");
             dialog.setModal(false); // 非模態
             dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE); // 禁止關閉
 
