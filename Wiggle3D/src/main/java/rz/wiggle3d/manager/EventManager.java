@@ -12,6 +12,7 @@ public class EventManager {
         BUTTON_BROWSE,
         BUTTON_REFRESH,
         BUTTON_DELETE,
+        BUTTON_3D,
 
         TAB_ORIGINAL_IMAGE,
         TAB_DEPTH_MAP,

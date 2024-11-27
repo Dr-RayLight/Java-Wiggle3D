@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import javax.swing.Box;
 import javax.swing.JPanel;
@@ -28,6 +30,7 @@ public class HeaderView extends JPanel implements ActionListener {
     private static final String BUTTON_NAME_BROWSE = "Browse";
     private static final String BUTTON_NAME_REFRESH = "Refresh";
     private static final String BUTTON_NAME_DELETE = "Delete";
+    private static final String BUTTON_NAME_GEN_3D = "Gen 3D";
 
     public HeaderView() {
         this.setLayout(new BorderLayout());
@@ -51,10 +54,17 @@ public class HeaderView extends JPanel implements ActionListener {
         deleteBtn.setText(BUTTON_NAME_DELETE);
         deleteBtn.addActionListener(this);
 
+        // Download 3D content Button
+        ImageButton download3DBtn = new ImageButton(PathUtil.ICON_3D.get(), IMAGE_BUTTON_WIDTH, IMAGE_BUTTON_HEIGHT);
+        download3DBtn.setBackground(Color.WHITE);
+        download3DBtn.setText(BUTTON_NAME_GEN_3D);
+        download3DBtn.addActionListener(this);
+
         Box box = Box.createHorizontalBox();
         box.add(browseBtn);
         box.add(refreshBtn);
         box.add(deleteBtn);
+        box.add(download3DBtn);
 
         add(box);
     }
@@ -93,6 +103,8 @@ public class HeaderView extends JPanel implements ActionListener {
                     return EventTask.create(EventType.BUTTON_DELETE);
                 case BUTTON_NAME_REFRESH:
                     return EventTask.create(EventType.BUTTON_REFRESH);
+                case BUTTON_NAME_GEN_3D:
+                    return EventTask.create(EventType.BUTTON_3D);
                 default:
                     return EventTask.empty();
             }

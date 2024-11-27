@@ -13,12 +13,23 @@ public enum PathUtil {
     ICON_FOLDER("folder.png"),
     ICON_DELETE("delete.png"),
     ICON_REFRESH("refresh.png"),
+    ICON_3D("icon_3d.png"),
 
     ;
 
     String _path;
+
     PathUtil(String path) {
         _path = path;
+    }
+
+    public static PathUtil[] getIconArray() {
+        return new PathUtil[] {
+                PathUtil.ICON_FOLDER,
+                PathUtil.ICON_REFRESH,
+                PathUtil.ICON_DELETE,
+                PathUtil.ICON_3D,
+        };
     }
 
     public String get() {
@@ -29,7 +40,7 @@ public enum PathUtil {
         try {
             return Optional.ofNullable(ImageIO.read(cl.getResourceAsStream(get())));
         } catch (IOException e) {
-           return Optional.empty();
+            return Optional.empty();
         }
     }
 }
