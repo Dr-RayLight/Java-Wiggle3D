@@ -14,6 +14,7 @@ import rz.util.ImagePicker;
 import rz.util.PathUtil;
 import rz.util.PyCmd;
 import rz.wiggle3d.components.ImageButton;
+import rz.wiggle3d.components.LoadingDialog;
 import rz.wiggle3d.manager.EventManager;
 import rz.wiggle3d.manager.EventTask;
 import rz.wiggle3d.manager.EventManager.EventType;
@@ -70,7 +71,12 @@ public class HeaderView extends JPanel implements ActionListener {
                     String oriImagePath = ImagePicker.pick();
                     String pyScript = getClass().getClassLoader().getResource("script/generate_depth_map.py").getPath();
                     
+                    if (!oriImagePath.isEmpty()) {
+                        LoadingDialog.instance().start();
+                    }
+
                     new Thread(() -> {
+
                         System.out.println("[HeaderView]: Start Gen");
                         File fileDepthMap = new File(new File(oriImagePath).getParent() + "/output_depth_map.png");
                         PyCmd.execute(pyScript, oriImagePath);

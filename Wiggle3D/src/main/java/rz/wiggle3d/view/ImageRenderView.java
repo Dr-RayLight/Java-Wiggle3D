@@ -13,6 +13,7 @@ import javax.swing.event.ChangeListener;
 
 import rz.util.PathUtil;
 import rz.wiggle3d.components.ImagePanel;
+import rz.wiggle3d.components.LoadingDialog;
 import rz.wiggle3d.controller.EventTaskListener;
 import rz.wiggle3d.manager.EventManager;
 import rz.wiggle3d.manager.EventManager.EventType;
@@ -31,6 +32,7 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
 
     private ImagePanel mOriImagePanel = new ImagePanel(PathUtil.IMAGE_NONE.get());
     private ImagePanel mDepthMapPanel = new ImagePanel(PathUtil.IMAGE_NONE.get());
+    private JTabbedPane mTabPanels;
 
     // ---------------------------------------------------------
     public ImageRenderView() {
@@ -67,7 +69,7 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
         JPanel tabWiggleStereo = new JPanel();
         tabWiggleStereo.setBackground(Color.WHITE);
 
-        JTabbedPane tabPanel = new JTabbedPane() {
+        mTabPanels = new JTabbedPane() {
             public Color getForegroundAt(int index) {
                 if (getSelectedIndex() == index)
                     return Color.BLUE;
@@ -75,11 +77,11 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
             }
         };
 
-        tabPanel.addTab(TAB_TITLE_ORIGIN_IMAGE, tabOriImg);
-        tabPanel.addTab(TAB_TITLE_DEPTH_MAP, tabDepthMap);
-        tabPanel.addTab(TAB_TITLE_WIGGLE_STEREOSCOPY, tabWiggleStereo);
+        mTabPanels.addTab(TAB_TITLE_ORIGIN_IMAGE, tabOriImg);
+        mTabPanels.addTab(TAB_TITLE_DEPTH_MAP, tabDepthMap);
+        mTabPanels.addTab(TAB_TITLE_WIGGLE_STEREOSCOPY, tabWiggleStereo);
 
-        tabPanel.addChangeListener(new ChangeListener() {
+        mTabPanels.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 Function<Integer, EventTask<Optional<?>>> EventTaskCreator = $ -> {
                     switch ($) {
@@ -93,11 +95,11 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
                             return EventTask.empty();
                     }
                 };
-                EventManager.dispatchEvent(EventTaskCreator.apply(tabPanel.getSelectedIndex()));
+                EventManager.dispatchEvent(EventTaskCreator.apply(mTabPanels.getSelectedIndex()));
             }
         });
 
-        add(tabPanel);
+        add(mTabPanels);
     }
 
     @Override
@@ -114,6 +116,9 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
             case DEPTH_MAP_UPLOAD: {
                 String imagePath = eventTask.getValue().get().toString();
                 mDepthMapPanel.updateImage(imagePath);
+                LoadingDialog.instance().stop();
+
+                mTabPanels.setSelectedIndex(TAB_INEDX_DEPTH_MAP);
             }
                 break;
             default:

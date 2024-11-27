@@ -15,7 +15,7 @@ public class MainView extends JFrame implements EventTaskListener {
     private static final int WIDTH = 1200;
     private static final int HIGHT = 800;
 
-    private final static String TITLE = "Wiggle Stereoscopy Generator";
+    private final static String TITLE = "Simple Wiggle Stereoscopy Generator";
 
     public enum RenderType {
         ORIGIN, DEPTH_MAP, WIGGLE
