@@ -51,21 +51,6 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
     }
 
     private void initTabs() {
-        // Original Images
-        JPanel tabOriImg = new JPanel();
-        tabOriImg.setLayout(new BorderLayout());
-        tabOriImg.setBackground(Color.WHITE);
-
-        // Draw Image.
-        tabOriImg.add(mOriImagePanel);
-        // ---------------------------------------------------------
-        // Depth Map
-        JPanel tabDepthMap = new JPanel();
-        tabDepthMap.setLayout(new BorderLayout());
-        tabDepthMap.setBackground(Color.WHITE);
-        tabDepthMap.add(mDepthMapPanel);
-        // ---------------------------------------------------------
-        // Wiggle Stereoscopy
         JPanel tabWiggleStereo = new JPanel();
         tabWiggleStereo.setBackground(Color.WHITE);
 
@@ -77,8 +62,8 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
             }
         };
 
-        mTabPanels.addTab(TAB_TITLE_ORIGIN_IMAGE, tabOriImg);
-        mTabPanels.addTab(TAB_TITLE_DEPTH_MAP, tabDepthMap);
+        mTabPanels.addTab(TAB_TITLE_ORIGIN_IMAGE, mOriImagePanel);
+        mTabPanels.addTab(TAB_TITLE_DEPTH_MAP, mDepthMapPanel);
         mTabPanels.addTab(TAB_TITLE_WIGGLE_STEREOSCOPY, tabWiggleStereo);
 
         mTabPanels.addChangeListener(new ChangeListener() {
@@ -120,7 +105,7 @@ public class ImageRenderView extends JPanel implements EventTaskListener {
                 break;
             case ORIGINAL_IMAGE_UPLOAD: {
                 mTabPanels.setSelectedIndex(TAB_INEDX_ORIGIN_IMAGE);
-                
+
                 String imagePath = eventTask.getValue().get().toString();
                 mOriImagePanel.updateImage(imagePath.toString());
             }

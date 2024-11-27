@@ -5,9 +5,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.nio.file.Path;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import javax.swing.Box;
 import javax.swing.JPanel;
@@ -19,6 +17,7 @@ import rz.wiggle3d.components.ImageButton;
 import rz.wiggle3d.components.LoadingDialog;
 import rz.wiggle3d.manager.EventManager;
 import rz.wiggle3d.manager.EventTask;
+import rz.wiggle3d.manager.ImagesManager;
 import rz.wiggle3d.manager.EventManager.EventType;
 
 public class HeaderView extends JPanel implements ActionListener {
@@ -76,11 +75,16 @@ public class HeaderView extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Function<String, EventTask<?>> EventTaskCreator = $ -> {
+            
             switch ($) {
                 case BUTTON_NAME_BROWSE:
-                    String oriImagePath = ImagePicker.pick();
+                    String pikedImagedPath = ImagePicker.pick();
+                    ImagesManager.setOriginalImagePath(pikedImagedPath);
+
+                case BUTTON_NAME_REFRESH:
+                    String oriImagePath = ImagesManager.getOriginalImagePath();
                     String pyScript = getClass().getClassLoader().getResource("script/generate_depth_map.py").getPath();
-                    
+
                     if (!oriImagePath.isEmpty()) {
                         LoadingDialog.instance().start();
                     }
@@ -93,16 +97,17 @@ public class HeaderView extends JPanel implements ActionListener {
 
                         boolean isGenSucc = fileDepthMap.exists();
                         System.out.println("[HeaderView]: isGenSucc: " + isGenSucc);
-                        
+
                         if (isGenSucc) {
-                            EventManager.dispatchEvent(EventTask.create(fileDepthMap.toPath(), EventType.DEPTH_MAP_UPLOAD));
+                            EventManager
+                                    .dispatchEvent(EventTask.create(fileDepthMap.toPath(), EventType.DEPTH_MAP_UPLOAD));
                         }
                     }).start();
                     return EventTask.create(oriImagePath, EventType.ORIGINAL_IMAGE_UPLOAD);
                 case BUTTON_NAME_DELETE:
                     return EventTask.create(EventType.BUTTON_DELETE);
-                case BUTTON_NAME_REFRESH:
-                    return EventTask.create(EventType.BUTTON_REFRESH);
+                // case BUTTON_NAME_REFRESH:
+                // return EventTask.create(EventType.BUTTON_REFRESH);
                 case BUTTON_NAME_GEN_3D:
                     return EventTask.create(EventType.BUTTON_3D);
                 default:
