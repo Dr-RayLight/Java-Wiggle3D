@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Wiggle Stereoscopy 演示</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #222;
+            margin: 0;
+            flex-direction: column;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #stereo-container {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 2px solid #fff;
+        }
+        .stereo-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        #left-image, #right-image {
+            display: none; /* 初始隱藏 */
+        }
+        .draggable {
+            cursor: move;
+        }
+        #start-button, #preview-button {
+            padding: 10px 20px;
+            background-color: #003399; /* 主題色：深藍 */
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+        #start-button:disabled, #preview-button:disabled {
+            background-color: #ccc;
+        }
+        #status-message {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #ffcc00; /* 主題色：黃色 */
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .upload-area {
+            width: 600px;
+            height: 100px;
+            border: 2px dashed #003399;
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="upload-area" id="upload-area">
+    點擊或拖曳圖片到這裡進行上傳
+</div>
+
+<input type="file" id="left-file" accept="image/*">
+<input type="file" id="right-file" accept="image/*">
+
+<div id="stereo-container">
+    <img id="left-image" class="stereo-image draggable" src="" alt="Left View">
+    <img id="right-image" class="stereo-image draggable" src="" alt="Right View">
+</div>
+
+<button id="preview-button" disabled>預覽</button>
+<button id="start-button" disabled>開始 Wiggle Stereoscopy</button>
+
+<div id="status-message">請上傳兩張圖片以開始。</div>
+
+<script>
+    // 獲取圖片元素
+    const leftImage = document.getElementById('left-image');
+    const rightImage = document.getElementById('right-image');
+    const startButton = document.getElementById('start-button');
+    const previewButton = document.getElementById('preview-button');
+    const statusMessage = document.getElementById('status-message');
+    const leftFileInput = document.getElementById('left-file');
+    const rightFileInput = document.getElementById('right-file');
+    const uploadArea = document.getElementById('upload-area');
+
+    let isLeftImageUploaded = false;
+    let isRightImageUploaded = false;
+
+    // 處理圖片上傳
+    function handleFileUpload(fileInput, imageElement, isLeft) {
+        const file = fileInput.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imageElement.src = e.target.result;
+                imageElement.style.display = 'block';
+                statusMessage.textContent = "圖片已上傳，您可以拖曳圖片或開始預覽。";
+                if (isLeft) {
+                    isLeftImageUploaded = true;
+                } else {
+                    isRightImageUploaded = true;
+                }
+
+                // 檢查兩張圖片是否都已上傳
+                if (isLeftImageUploaded && isRightImageUploaded) {
+                    startButton.disabled = false;  // 啟用開始按鈕
+                    previewButton.disabled = false;  // 啟用預覽按鈕
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // 綁定上傳區域的拖曳和點擊事件
+    uploadArea.addEventListener('click', () => {
+        leftFileInput.click();  // 點擊時觸發左圖片上傳
+    });
+
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.backgroundColor = '#444';  // 拖曳過程中更改顏色
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.backgroundColor = '#333';  // 拖曳離開區域時重設顏色
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.backgroundColor = '#333';  // 拖曳結束後重設顏色
+        const files = e.dataTransfer.files;
+        if (files.length === 2) {
+            handleFileUpload({ files: [files[0]] }, leftImage, true);
+            handleFileUpload({ files: [files[1]] }, rightImage, false);
+        } else {
+            alert('請上傳兩張圖片！');
+        }
+    });
+
+    // 處理右側圖片上傳
+    leftFileInput.addEventListener('change', () => {
+        handleFileUpload(leftFileInput, leftImage, true);
+    });
+
+    rightFileInput.addEventListener('change', () => {
+        handleFileUpload(rightFileInput, rightImage, false);
+    });
+
+    // 設定切換間隔（毫秒）
+    const interval = 100; // 每0.1秒切換一次
+
+    // 設定每次切換的偏移量
+    const offset = 10; // 像素
+
+    // 記錄當前狀態
+    let isLeftVisible = true;
+    let direction = 1; // 1表示向右移動，-1表示向左移動
+
+    function startWiggleStereoscopy() {
+        setInterval(() => {
+            if (isLeftVisible) {
+                leftImage.style.display = 'none';
+                rightImage.style.display = 'block';
+                rightImage.style.transform = `translateX(${offset * direction}px)`;
+            } else {
+                rightImage.style.display = 'none';
+                leftImage.style.display = 'block';
+                leftImage.style.transform = `translateX(${offset * direction * -1}px)`;
+            }
+
+            isLeftVisible = !isLeftVisible;
+            direction *= -1;
+        }, interval);
+    }
+
+    function previewWiggleStereoscopy() {
+        // 開始預覽模式，將會顯示圖片移動的效果
+        setInterval(() => {
+            if (isLeftVisible) {
+                leftImage.style.display = 'none';
+                rightImage.style.display = 'block';
+                rightImage.style.transform = `translateX(${offset * direction}px)`;
+            } else {
+                rightImage.style.display = 'none';
+                leftImage.style.display = 'block';
+                leftImage.style.transform = `translateX(${offset * direction * -1}px)`;
+            }
+
+            isLeftVisible = !isLeftVisible;
+            direction *= -1;
+        }, 100);
+    }
+
+    // 綁定開始按鈕事件
+    startButton.addEventListener('click', startWiggleStereoscopy);
+
+    // 綁定預覽按鈕事件
+    previewButton.addEventListener('click', previewWiggleStereoscopy);
+
+</script>
+
+</body>
+</html>
